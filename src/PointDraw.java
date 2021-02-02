@@ -26,7 +26,7 @@ public class PointDraw extends JFrame
     {
         int xpos, ypos;
         int[][] dotPos = new int[6][2];
-        int dotCount = 0;
+        int dotCount = 1;
 
         public CanvasPanel() {
 
@@ -41,18 +41,16 @@ public class PointDraw extends JFrame
         @Override
         public void mouseClicked(MouseEvent e)
         {
-            xpos = e.getX();
-            ypos = e.getY();
 
-            dotPos[dotCount][0] = xpos;
-            dotPos[dotCount][1] = ypos;
+            dotPos[dotCount][0] = e.getX();
+            dotPos[dotCount][1] = e.getY();
 
-
+            dotCount++;
             if (dotCount > 5)
-                dotCount = 0;
+                dotCount = 1;
 
             repaint();
-            dotCount++;
+
         }
 
 
@@ -67,21 +65,23 @@ public class PointDraw extends JFrame
         {
             Graphics2D g2d =  (Graphics2D) g;
 
-            for (int i = 0; i < dotCount; i++)
+            for (int i = 0; i < dotCount-1; i++)
             {
+
                 g2d.setPaint(Color.RED);
                 g2d.fillOval(dotPos[i][0] - 10,dotPos[i][1] - 10,20,20);
 
-                if(dotCount >= 1)
+                if(dotCount >= 10)
                 {
                     g2d.setPaint(Color.black);
-                    for (int j = 0; j < dotCount + 1; j++)
+                    for (int j = 0; j < dotCount; j++)
                     {
                         g2d.drawLine(dotPos[j][0],dotPos[i][1],dotPos[j+1][0],dotPos[j+1][1]);
                     }
                 }
 
             }
+
         }
 
         @Override
