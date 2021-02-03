@@ -29,6 +29,11 @@ public class ShapeDraw extends JFrame
         int height;
         int width;
 
+        int randomShape;
+
+        int lastShape;
+        boolean samePlace;
+
         Random random = new Random();
         public ShapeCanvas() {
 
@@ -47,18 +52,34 @@ public class ShapeDraw extends JFrame
         private void drawShape(Graphics g)
         {
             Graphics2D g2d = (Graphics2D) g;
-            int randomShape = (int)(Math.random() * 4);
-            switch (randomShape)
+
+            if(samePlace)
             {
-                case 0:
-                    g2d.fillRect(mouseX - width/2,mouseY - height/2 ,width,height);
-                case 1:
-                    g2d.fillOval(mouseX - width/2,mouseY - height/2,width,height);
-                case 2:
-                    g2d.fillArc(mouseX - width/2,mouseY - height/2,width,height,100,200);
-                case 3:
-                    g2d.fillRoundRect(mouseX - width/2,mouseY - height/2,width,height,50,50);
+                int colorPick = (int)(Math.random() * 5);
+
+                switch (colorPick) {
+                    case 0 -> g2d.setPaint(Color.CYAN);
+                    case 1 -> g2d.setPaint(Color.BLUE);
+                    case 2 -> g2d.setPaint(Color.RED);
+                    case 3 -> g2d.setPaint(Color.YELLOW);
+                    case 4 -> g2d.setPaint(Color.PINK);
+                }
+
             }
+            else
+            {
+                randomShape = (int) (Math.random() * 4);
+                g2d.setPaint(Color.BLACK);
+            }
+
+            switch (randomShape) {
+                case 0 -> g2d.fillRect(mouseX - width / 2, mouseY - height / 2, width, height);
+                case 1 -> g2d.fillOval(mouseX - width / 2, mouseY - height / 2, width, height);
+                case 2 -> g2d.fillArc(mouseX - width / 2, mouseY - height / 2, width, height, 100, 200);
+                case 3 -> g2d.fillRoundRect(mouseX - width / 2, mouseY - height / 2, width, height, 50, 50);
+            }
+
+
         }
 
 
@@ -66,12 +87,40 @@ public class ShapeDraw extends JFrame
         public void mouseClicked(MouseEvent e)
         {
 
-            mouseX = e.getX();
-            mouseY = e.getY();
+            if(!checkClick(e))
+            {
+                mouseX = e.getX();
+                mouseY = e.getY();
 
-            height = (int)(Math.random() * 300);
-            width = (int)(Math.random() * 300);
-            repaint();
+                height = (int) (Math.random() * 300);
+                width = (int) (Math.random() * 300);
+                repaint();
+            }
+            else
+            {
+                repaint();
+            }
+        }
+
+        private boolean checkClick(MouseEvent e)
+        {
+            if (e.getX() >= mouseX - width/2 && e.getX() <= mouseX  + width/2)
+            {
+                if(e.getY() >= mouseY - height/2 && e.getY() < mouseY + height/2)
+                {
+                    samePlace = true;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                samePlace = false;
+                return false;
+            }
         }
 
         @Override
