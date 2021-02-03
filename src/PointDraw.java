@@ -1,11 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 public class PointDraw extends JFrame
 {
-    private CanvasPanel drawingPanel = new CanvasPanel();
+    private final CanvasPanel drawingPanel = new CanvasPanel();
+    private final JPanel mainPanel = new JPanel();
+
 
     public PointDraw()
     {
@@ -16,17 +17,18 @@ public class PointDraw extends JFrame
     }
     private void init()
     {
-        add(drawingPanel);
-        drawingPanel.AllowClick();
-        setVisible(true);
-    }
 
+        drawingPanel.AllowClick();
+
+        add(drawingPanel);
+        setVisible(true);
+
+    }
 
     class CanvasPanel extends JPanel implements MouseListener
     {
-        int xpos, ypos;
-        int[][] dotPos = new int[6][2];
-        int dotCount = 1;
+        int[][] dotPos = new int[16][2];
+        int dotCount = 0;
 
         public CanvasPanel() {
 
@@ -46,13 +48,13 @@ public class PointDraw extends JFrame
             dotPos[dotCount][1] = e.getY();
 
             dotCount++;
-            if (dotCount > 5)
-                dotCount = 1;
+            if (dotCount == 16)
+                dotCount = 0;
+
 
             repaint();
 
         }
-
 
         public void paintComponent(Graphics g)
         {
@@ -65,23 +67,21 @@ public class PointDraw extends JFrame
         {
             Graphics2D g2d =  (Graphics2D) g;
 
-            for (int i = 0; i < dotCount-1; i++)
+            for (int i = 0; i < dotCount; i++)
             {
+                g2d.setPaint(Color.CYAN);
+                g2d.fillOval(dotPos[i][0] - 5,dotPos[i][1] - 5,10,10);
 
-                g2d.setPaint(Color.RED);
-                g2d.fillOval(dotPos[i][0] - 10,dotPos[i][1] - 10,20,20);
-
-                if(dotCount >= 10)
+                if(dotCount > 1)
                 {
-                    g2d.setPaint(Color.black);
-                    for (int j = 0; j < dotCount; j++)
+                    g2d.setPaint(Color.GREEN);
+
+                    for (int j = 1; j < dotCount; j++)
                     {
-                        g2d.drawLine(dotPos[j][0],dotPos[i][1],dotPos[j+1][0],dotPos[j+1][1]);
+                        g2d.drawLine(dotPos[j][0],dotPos[j][1],dotPos[j-1][0],dotPos[j-1][1]);
                     }
                 }
-
             }
-
         }
 
         @Override
@@ -104,6 +104,7 @@ public class PointDraw extends JFrame
 
         }
     }
+
 
 
     public static void main(String[] args)
