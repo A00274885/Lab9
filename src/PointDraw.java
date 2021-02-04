@@ -51,9 +51,7 @@ public class PointDraw extends JFrame
             if (dotCount == 16)
                 dotCount = 0;
 
-
             repaint();
-
         }
 
         public void paintComponent(Graphics g)
@@ -88,17 +86,14 @@ public class PointDraw extends JFrame
         public void mousePressed(MouseEvent e) {
 
         }
-
         @Override
         public void mouseReleased(MouseEvent e) {
 
         }
-
         @Override
         public void mouseEntered(MouseEvent e) {
 
         }
-
         @Override
         public void mouseExited(MouseEvent e) {
 
@@ -110,6 +105,5 @@ public class PointDraw extends JFrame
     public static void main(String[] args)
     {
         new PointDraw().init();
-
     }
 }

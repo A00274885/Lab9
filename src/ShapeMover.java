@@ -15,6 +15,9 @@ public class ShapeMover extends JFrame implements Mover
     JPanel westButtons = new JPanel();
     JPanel eastButtons = new JPanel();
 
+    private ArrayList<Shape> shapes = new ArrayList<>();
+    private ArrayList<Color> colors = new ArrayList<>();
+
     ActionListener listener = new ClickListener();
 
     //Shape choice
@@ -23,7 +26,6 @@ public class ShapeMover extends JFrame implements Mover
     JButton redButton, blueButton, yellowButton;
 
     JButton reset;
-
 
     Shape currentShape;
     Shape defaultShape;
@@ -91,15 +93,9 @@ public class ShapeMover extends JFrame implements Mover
         reset = new JButton("Reset");
     }
 
-
-
     public class MoverCanvas extends JPanel implements MouseListener
     {
         public MoverCanvas() { addMouseListener(this);}
-
-        private ArrayList<Shape> shapes = new ArrayList<>();
-
-        private ArrayList<Color> colors = new ArrayList<>();
 
         public void paintComponent(Graphics g)
         {
@@ -111,6 +107,7 @@ public class ShapeMover extends JFrame implements Mover
         {
             Graphics2D g2d = (Graphics2D) g;
 
+            System.out.println("draw" + shapes.size());
             for (int i = 0; i < shapes.size(); i++)
             {
                 Shape shape = shapes.get(i);
@@ -126,7 +123,6 @@ public class ShapeMover extends JFrame implements Mover
         {
             posx = e.getX();
             posy = e.getY();
-
 
             if (shapeChosen == 1)
             {
@@ -144,7 +140,6 @@ public class ShapeMover extends JFrame implements Mover
         void rectangleSelect()
         {
             currentShape = new Rectangle(posx - 100,posy - 50,200,100);
-
         }
 
         void circleSelect()
@@ -154,9 +149,10 @@ public class ShapeMover extends JFrame implements Mover
 
         void clear()
         {
-            shapes.clear();
+            shapes = new ArrayList<>();
+            System.out.println(shapes.size());
+            repaint();
         }
-
 
         @Override
         public void mousePressed(MouseEvent e) {
@@ -192,7 +188,6 @@ public class ShapeMover extends JFrame implements Mover
     }
     class ClickListener implements ActionListener
     {
-
         MoverCanvas moverCanvas = new MoverCanvas();
         @Override
         public void actionPerformed(ActionEvent e)
